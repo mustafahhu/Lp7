@@ -1,9 +1,12 @@
 yfinance
-ta
 pandas
-schedule
-tensorflow
-scikit-learn
-pytz
+ta
+numpy
 requests
+pytz
+schedule
+scikit-learn
+tensorflow
 scipy
+transformers
+torch
