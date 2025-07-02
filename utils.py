@@ -1,29 +1,38 @@
-import numpy as np
-from scipy.signal import argrelextrema
+import json
+import requests
+import traceback
 
-# تحويل القيمة إلى float بأمان
-def safe_float(val):
+# تحميل الإعدادات من ملف config.json
+def load_config(path="config.json"):
     try:
-        return float(val)
-    except:
-        return float(val.item())
+        with open(path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"❌ فشل في تحميل ملف الإعدادات: {e}")
+        return {}
 
-# تحديد مستويات الدعم
-def find_support_levels(df, order=5):
-    idx = argrelextrema(df['Close'].values, np.less_equal, order=order)[0]
-    return df['Close'].iloc[idx].values
+# إرسال رسالة إلى جميع البوتات
+def send_telegram_message(text, bots):
+    for bot in bots:
+        try:
+            requests.post(
+                f"https://api.telegram.org/bot{bot['token']}/sendMessage",
+                data={
+                    "chat_id": bot['chat_id'],
+                    "text": text,
+                    "parse_mode": "Markdown"
+                }
+            )
+        except Exception as e:
+            print(f"❌ فشل إرسال الرسالة إلى بوت: {e}")
 
-# تحديد مستويات المقاومة
-def find_resistance_levels(df, order=5):
-    idx = argrelextrema(df['Close'].values, np.greater_equal, order=order)[0]
-    return df['Close'].iloc[idx].values
+# إرسال رسالة عند بداية البوت
+def notify_start(bots):
+    send_telegram_message("✅ تم تشغيل البوت بنجاح", bots)
 
-# التحقق إذا كان السعر قريب من مستوى دعم أو مقاومة
-def is_near_level(price, levels, threshold=0.005):
-    return any(abs(price - level) / level < threshold for level in levels)
-
-# تنسيق إشارة الشمعة (برايس أكشن) لإدراجها في الرسالة
-def summarize_patterns(patterns):
-    if not patterns:
-        return "لا توجد شموع"
-    return ' | '.join(patterns)
+# إرسال رسالة عند توقف البوت بسبب خطأ
+def notify_error(bots, err_msg=None):
+    error_text = f"❌ توقف البوت بسبب خطأ:\n```{traceback.format_exc()}```"
+    if err_msg:
+        error_text += f"\n📌 {err_msg}"
+    send_telegram_message(error_text, bots)
