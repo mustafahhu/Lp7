@@ -1,1 +1,27 @@
-
+{
+  "okx": {
+    "apiKey": "9caa59a0-a1ab-4668-a14d-5468e2d4c6bf",
+    "secretKey": "BF0A838D8A0849CD5212A2565BBCD4FF",
+    "passphrase": "YOUR_OKX_PASSPHRASE",
+    "useServerTime": true,
+    "flag": "1",  // "1" تعني demo trading
+    "symbol": "BTC-USDT",
+    "tradeMode": "demo",
+    "orderType": "market",
+    "positionSide": "long"
+  },
+  "telegram_bots": [
+    {
+      "token": "7674558344:AAEpskXch4GjJE9B-WyJYZzfJfGzeW4LOYQ",
+      "chat_id": "598941497"
+    },
+    {
+      "token": "6568686275:AAFFUnwXknRDga7plYo09Kj9WQehSFhI3sI",
+      "chat_id": "125768455"
+    }
+  ],
+  "timezone": "Asia/Baghdad",
+  "symbols": ["BTC-USD", "ETH-USD", "GC=F"],
+  "timeframes": ["5m", "15m", "30m"],
+  "refresh_interval_minutes": 5
+}
