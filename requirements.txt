@@ -1,11 +1,9 @@
 yfinance
 ta
 pandas
-numpy
-requests
 schedule
 tensorflow
 scikit-learn
 pytz
+requests
 scipy
-okx-python-sdk-api-v5 @ git+https://github.com/okx/okx-python-sdk-api-v5.git
